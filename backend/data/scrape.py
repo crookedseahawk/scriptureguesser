@@ -11,7 +11,9 @@ def obtain_soup(url):
   return div_tag
 
 bible_soup = obtain_soup(raw)
+
+"""
 with open("prep_data/prep.csv", "w") as file:
   for b in bible_soup[4:]:
     file.write(b.text)
-  
+"""
