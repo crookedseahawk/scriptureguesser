@@ -1,8 +1,8 @@
 import re
 
-path = "prep_data/prep.csv"
-old_file = "prep_data/old.csv"
-new_file = "prep_data/new.csv"
+path = "prep.csv"
+old_file = "old.csv"
+new_file = "new.csv"
 
 
 def divide(path):
