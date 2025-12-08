@@ -2,7 +2,7 @@ GOD_DICT = {"The Old Testament":
             {"Genesis":
                {1:
                   {1:"In the beginning God created the heaven and the earth.",
-                  2:"And the earth was without form, and void; and darkness was upon the face ofthe deep. And the Spirit of God moved upon the face of the waters."}},
+                  2:"And the earth was without form, and void; and darkness was upon the face of the deep. And the Spirit of God moved upon the face of the waters."}},
             "Exodus":
                {1:
                   {1:"Now these are the names of the children of Israel, which came into Egypt; every man and his household came with Jacob."},
