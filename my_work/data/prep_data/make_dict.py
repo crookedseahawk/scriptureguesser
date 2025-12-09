@@ -134,41 +134,41 @@ def parse_kjv_text_with_mapping(file_path, output_json_path):
         "Haggai","Zechariah","Malachi"
     }
 
-    scripture_dict = {
-        "The Old Testament": {},
-        "The New Testament": {}
-    }
+    scripture_dict = {"The Old Testament": {}, "The New Testament": {}}
 
-    verse_pattern = re.compile(r'(\d+)[.:](\d+)\s+(.+?)(?=(\d+[.:]\d+)|$)', re.DOTALL)
+    # Read entire text as a single string
+    with open(file_path, 'r', encoding='utf-8') as f:
+        text = f.read()
+
+    # Normalize line breaks
+    text = text.replace('\r\n', '\n').replace('\r', '\n')
 
     current_book = None
     current_testament = None
 
-    with open(file_path, 'r', encoding='utf-8') as f:
-        lines = f.readlines()
+    # Detect book headers and split
+    book_headers = sorted(book_mapping.keys(), key=lambda x: -len(x))  # longest first to avoid partial matches
+    for header in book_headers:
+        # Replace header with a unique marker
+        text = text.replace(header, f"\n###BOOKSTART###{header}###\n")
 
-    for line in lines:
-        line = line.strip()
-        if not line:
-            continue
+    # Split by book markers
+    books = re.split(r"\n###BOOKSTART###(.*?)###\n", text)
+    # The split results in: ['', header1, content1, header2, content2, ...]
+    for i in range(1, len(books), 2):
+        raw_header = books[i].strip()
+        content = books[i+1]
+        canonical_book = book_mapping[raw_header]
+        current_book = canonical_book
+        current_testament = "The Old Testament" if canonical_book in old_testament_books else "The New Testament"
+        scripture_dict[current_testament][current_book] = {}
 
-        # Check for book header
-        if line in book_mapping:
-            canonical_book = book_mapping[line]
-            current_book = canonical_book
-            current_testament = "The Old Testament" if canonical_book in old_testament_books else "The New Testament"
-            scripture_dict[current_testament][current_book] = {}
-            continue
-
-        if not current_book:
-            continue
-
-        # Extract multiple verses per line
-        for match in verse_pattern.finditer(line):
+        # Match all verses in content
+        verse_pattern = re.compile(r'(\d+)[.:](\d+)\s+(.+?)(?=(\d+[.:]\d+)|$)', re.DOTALL)
+        for match in verse_pattern.finditer(content):
             chapter = int(match.group(1))
             verse = int(match.group(2))
             verse_text = match.group(3).replace("\n", " ").strip()
-
             if chapter not in scripture_dict[current_testament][current_book]:
                 scripture_dict[current_testament][current_book][chapter] = {}
             scripture_dict[current_testament][current_book][chapter][verse] = verse_text
