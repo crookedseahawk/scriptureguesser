@@ -42,29 +42,10 @@ function calcScore(guess, correct) {
     return Math.floor(MAX_POINTS * Math.exp(-total / D));
 }
 
-// Update the top score tracker
-function updateScoreTracker() {
-    const tracker = document.getElementById("score-tracker");
-    if (!tracker) {
-        // Create tracker if it doesn't exist
-        const div = document.createElement("div");
-        div.id = "score-tracker";
-        div.style.padding = "10px";
-        div.style.backgroundColor = "#f0f0f0";
-        div.style.borderBottom = "1px solid #ccc";
-        div.style.fontWeight = "bold";
-        div.style.marginBottom = "10px";
-        document.body.prepend(div);
-    }
-    document.getElementById("score-tracker").innerText = 
-        `Round: ${round + 1} / ${totalRounds}  |  Scores: ${scores.join(", ")}`;
-}
-
 // Load scriptures.json and start game
 async function loadGame() {
     const res = await fetch("scriptures.json");
     structure = await res.json();
-    updateScoreTracker();
     startRound();
 }
 
@@ -109,7 +90,7 @@ function startRound() {
     document.getElementById("scripture-box").innerText = currentScripture.text;
     document.getElementById("score-area").innerHTML = "";
 
-    updateScoreTracker();
+    // Start by building the first choice: Testament
     buildTestamentChoice();
 }
 
@@ -187,8 +168,6 @@ function finishGuess(t, b, c, v) {
         <p>Correct Path: ${correctPath.join(" → ")}</p>
         <p>Your Guess: ${guess.join(" → ")}</p>
     `;
-
-    updateScoreTracker();
     setTimeout(startRound, 1500);
 }
 
@@ -202,7 +181,6 @@ function showFinalScore() {
         <p>Total Score: ${total}</p>
         <button onclick="restartGame()">Play Again</button>
     `;
-    updateScoreTracker();
 }
 
 // Restart game
