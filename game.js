@@ -105,6 +105,9 @@ function buildTestamentChoice() {
         btn.onclick = () => buildBookChoice(testament, testamentNum);
         div.appendChild(btn);
     });
+
+    // Verify
+    verifyBoxCount("Testament", Object.keys(structure).length);
 }
 
 // Build Book buttons
@@ -119,6 +122,9 @@ function buildBookChoice(testament, testamentNum) {
         btn.onclick = () => buildChapterChoice(testament, testamentNum, book, i + 1);
         div.appendChild(btn);
     });
+
+    // Verify
+    verifyBoxCount("Book", booksForTest.length);
 }
 
 // Build Chapter buttons
@@ -127,15 +133,16 @@ function buildChapterChoice(testament, testamentNum, book, bookNum) {
     div.innerHTML = `<h3>Choose Chapter:</h3>`;
 
     const chapters = structure[testament][book];
-    Object.keys(chapters)
-        .map(ch => parseInt(ch))
-        .sort((a,b)=>a-b)
-        .forEach(chNum => {
-            const btn = document.createElement("button");
-            btn.innerText = chNum;
-            btn.onclick = () => buildVerseChoice(testamentNum, bookNum, chNum);
-            div.appendChild(btn);
-        });
+    const chapterNums = Object.keys(chapters).map(ch => parseInt(ch));
+    chapterNums.sort((a,b)=>a-b).forEach(chNum => {
+        const btn = document.createElement("button");
+        btn.innerText = chNum;
+        btn.onclick = () => buildVerseChoice(testamentNum, bookNum, chNum);
+        div.appendChild(btn);
+    });
+
+    // Verify
+    verifyBoxCount("Chapter", chapterNums.length);
 }
 
 // Build Verse buttons
@@ -144,15 +151,16 @@ function buildVerseChoice(testamentNum, bookNum, chapterNum) {
     div.innerHTML = `<h3>Choose Verse:</h3>`;
 
     const verses = structure[currentScripture.testament][currentScripture.book][chapterNum];
-    Object.keys(verses)
-        .map(v => parseInt(v))
-        .sort((a,b)=>a-b)
-        .forEach(verseNum => {
-            const btn = document.createElement("button");
-            btn.innerText = verseNum;
-            btn.onclick = () => finishGuess(testamentNum, bookNum, chapterNum, verseNum);
-            div.appendChild(btn);
-        });
+    const verseNums = Object.keys(verses).map(v => parseInt(v)).sort((a,b)=>a-b);
+    verseNums.forEach(verseNum => {
+        const btn = document.createElement("button");
+        btn.innerText = verseNum;
+        btn.onclick = () => finishGuess(testamentNum, bookNum, chapterNum, verseNum);
+        div.appendChild(btn);
+    });
+
+    // Verify
+    verifyBoxCount("Verse", verseNums.length);
 }
 
 // Evaluate guess
@@ -180,6 +188,17 @@ function showFinalScore() {
         <p>Total Score: ${total}</p>
         <button onclick="restartGame()">Play Again</button>
     `;
+}
+
+// Verify number of boxes/buttons created
+function verifyBoxCount(type, expectedCount) {
+    const div = document.getElementById("choice-area");
+    const actualCount = div.querySelectorAll("button").length;
+    if (actualCount !== expectedCount) {
+        console.warn(`Mismatch for ${type}: expected ${expectedCount}, found ${actualCount}`);
+    } else {
+        console.log(`${type} box count correct: ${actualCount}`);
+    }
 }
 
 // Restart game
