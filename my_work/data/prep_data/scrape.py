@@ -17,3 +17,4 @@ with open("prep_data/prep.csv", "w") as file:
   for b in bible_soup[4:]:
     file.write(b.text)
 """
+
