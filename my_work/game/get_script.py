@@ -1,5 +1,5 @@
 import random
-from backend.data.dictionaries import *
+from my_work.data.dictionaries import *
 
 def rand_script(dct):
     rand = random.randint(0,len(dct)-1)

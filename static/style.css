@@ -1,0 +1,25 @@
+body {
+    font-family: Arial;
+    padding: 20px;
+    background: #f4f4f4;
+}
+
+button {
+    padding: 10px 15px;
+    margin: 5px;
+    font-size: 18px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+#scripture-box {
+    background: white;
+    padding: 20px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    font-size: 22px;
+}
+
+.choice-section {
+    margin-bottom: 20px;
+}

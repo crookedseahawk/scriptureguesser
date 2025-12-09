@@ -1,4 +1,4 @@
-from backend.data.dictionaries import *
+from my_work.data.dictionaries import *
 from math import exp
 
 def calc_score(guess,correct):
