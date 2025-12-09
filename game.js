@@ -56,8 +56,11 @@ function updateScoreTracker() {
         div.style.marginBottom = "10px";
         document.body.prepend(div);
     }
+
+    let roundText = (round >= totalRounds) ? "Final" : `${round + 1} / ${totalRounds}`;
+
     document.getElementById("score-tracker").innerText = 
-        `Round: ${round + 1} / ${totalRounds}  |  Scores: ${scores.join(", ")}`;
+        `Round: ${roundText}  |  Scores: ${scores.join(", ")}`;
 }
 
 // Load scriptures.json and start game
